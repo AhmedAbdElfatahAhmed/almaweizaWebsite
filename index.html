@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/index_style.css" />
+    <link
+      rel="stylesheet"
+      href="https://www.fontstatic.com/f=thuluth-decorated"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cairo&display=swap"
+    />
+    <title>الموعظة</title>
+  </head>
+
+  <body>
+    <!-- Start header -->
+    <section class="main">
+      <header>
+        <nav>
+          <div class="logo">الموعظة</div>
+          <ul>
+            <li class="active" data-section="main">الصفحة الرئيسية</li>
+            <li data-section="hadith">أحاديث</li>
+            <li data-section="lectures">محاضرات</li>
+            <li data-section="quran">الْقُرْآن الْكَرِيْم</li>
+            <li data-section="paryer-times">أوقات الصلاة</li>
+            <li data-section="footer">تواصل معنا</li>
+          </ul>
+          <div class="bars clicked">
+            <i class="fas fa-bars"></i>
+          </div>
+        </nav>
+        <div class="tittle">
+          <h1>
+            مرحباً بك فى <br />
+            موقع الموعظة الإسلامي
+          </h1>
+          <button>
+            إبدأ التصفح
+            <i class="fas fa-caret-left"></i>
+          </button>
+        
+      </header>
+    </section>
+    <!-- End header -->
+    <!-- Start hadith section -->
+
+    <section class="hadith">
+      <div class="container">
+        <h2>أحاديث</h2>
+        <div class="buttons">
+          <span class="prev">السابق</span>
+          <span class="number"></span>
+          <span class="next">التالي</span>
+        </div>
+        <div class="hadithContainer"></div>
+      </div>
+    </section>
+
+    <!-- End hadith section -->
+    <!-- Start lectures section -->
+    <section class="lectures">
+      <div class="container">
+        <h2>محاضرات</h2>
+        <div class="lectuers-content">
+          <div class="lecture ml">
+            <div class="text">
+              <a
+                href="https://www.youtube.com/watch?v=WCYUb9lHAyw"
+                target="_blank">للطمأنينة وهدوء النفس والسعادة
+                <p>محاضرة قصيرة للشيخ الشعراوى</p>
+              </div>
+              <img src="images/sha.jpg" alt="" />
+              </a>
+          </div>
+
+          <div class="lecture mr">
+            <div class="text">
+              <a
+                href="https://www.youtube.com/watch?v=osV05HVC_i0"
+                target="_blank">وصايا النبي لراحة البال 
+                <p>محاضرة قصيرة للداعية مصطفى حسني</p>
+              </div>
+              <img src="images/mostafa.jpg" alt="" />
+              </a>
+          </div>
+
+          
+          <div class="lecture ml">
+            <div class="text">
+              <a
+                href="https://www.youtube.com/watch?v=A4AbQ6JW370"
+                target="_blank">خطبة لا تيأس  
+                <p>خطبة للشيخ محمد العريفي</p>
+              </div>
+              <img src="images/mohamed.jpg" alt="" />
+              </a>
+          </div>
+
+          
+          <div class="lecture mr">
+            <div class="text">
+              <a
+                href="https://www.youtube.com/watch?v=EEYRangHSIw"
+                target="_blank">من اجمل ما ستسمع عن الرزق
+                <p>محاضرة قصيرة للشيخ الشعراوى</p>
+              </div>
+              <img src="images/sha2.jpg" alt="" />
+              </a>
+          </div>
+
+          
+          <div class="lecture ml">
+            <div class="text">
+              <a
+                href="https://www.youtube.com/watch?v=hKN9GzUnRUs&list=PLiJggHtOlnN3LdOTtPfHB7xp6KveCXkR_&index=72"
+                target="_blank">الجنة في لحظة
+                <p>محاضرة قصيرة للداعية مصطفى حسني</p>
+              </div>
+              <img src="images/mostafa2.jpg" alt="" />
+              </a>
+          </div>
+
+          
+          <div class="lecture mr">
+            <div class="text">
+              <a
+                href="https://www.youtube.com/watch?v=QoyPTAtbDnU"
+                target="_blank">خطبة روح الصلاة ( الخشوع )
+                <p>خطبة للشيخ محمد العريفي</p>
+              </div>
+              <img src="images/mohamed2.jpg" alt="" />
+              </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End lectures section -->
+    <!-- Start Quran section -->
+
+    <section class="quran here">
+      <div class="container">
+        <h2>الْقُرْآن الْكَرِيْم</h2>
+        <div class="display-quran">
+        <div class="read-quran quran-active">
+          قراءة الْقُرْآن 
+        </div>
+        <div class="listen-quran quran-activ">
+          استماع الْقُرْآن
+        </div>
+
+        </div>
+        <div class="surahsContainer-read display-non">
+
+        </div>
+
+        <div class="popup">
+          <div class="closed"><i class="far fa-times-circle" title="close"></i></div>
+        </div>
+        <div class="surahsContainer-listen display-none">
+          <div class="audio-container">
+            <p>اضغط علي السورة للاستماع اليها</p>
+            <audio src="" controls autoplay></audio>
+            <div class="controls">
+              <i class="next fas fa-forward"></i>
+              <i class="play fas fa-play"></i>
+              <i class="prev fas fa-backward"></i>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+   <!-- End Quran section -->
+
+   <!-- Start paryer times section -->
+  <section class="paryer-times">
+    <div class="container">
+      <h2>أوقات الصلاة</h2>
+      <p class="alex">في اسكندرية</p>
+      <div class="paryer-cards">
+      <div class="card">
+        <p class="paryer">الفجر</p>
+        <p class="time" data-paryer="Fajr"></p>
+      </div>
+      <div class="card">
+        <p class="paryer">الظهر</p>
+        <p class="time" data-paryer="Dhuhr"></p>
+      </div>
+
+      <div class="card">
+        <p class="paryer">العصر</p>
+        <p class="time" data-paryer="Asr"></p>
+      </div>
+
+      <div class="card">
+        <p class="paryer">المغرب</p>
+        <p class="time" data-paryer="Maghrib"></p>
+      </div>
+
+      <div class="card">
+        <p class="paryer">العشاء</p>
+        <p class="time" data-paryer="Isha"></p>
+      </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+   <!-- End paryer times section -->
+<!-- Start footer section -->
+    <section class="footer">
+      <h2>تواصل معنا</h2>
+      <svg height="100%" width="100%" id="svg" viewBox="0 0 1440 600" xmlns="http://www.w3.org/2000/svg" class="transition duration-300 ease-in-out delay-150"><path d="M 0,600 C 0,600 0,300 0,300 C 65.12521889258848,330.53930201011224 130.25043778517696,361.0786040202244 183,334 C 235.74956221482304,306.9213959797756 276.12346775188064,222.22488592921442 317,219 C 357.87653224811936,215.77511407078558 399.2556912073005,294.0218522629177 461,304 C 522.7443087926995,313.9781477370823 604.8537674189173,255.68770501911456 668,255 C 731.1462325810827,254.31229498088544 775.3292391170304,311.227327660624 824,314 C 872.6707608829696,316.772672339376 925.829276112961,265.40298433838944 970,269 C 1014.170723887039,272.59701566161056 1049.3536564311257,331.16073498581824 1108,321 C 1166.6463435688743,310.83926501418176 1248.7560981625354,231.95407571833763 1308,217 C 1367.2439018374646,202.04592428166237 1403.6219509187322,251.02296214083117 1440,300 C 1440,300 1440,600 1440,600 Z" stroke="none" stroke-width="0" fill="#28a745ff" class="transition-all duration-300 ease-in-out delay-150"></path></svg>
+      <div class="social-icons">
+        <a href="https://www.linkedin.com/in/ahmed-abd-elfatah/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://github.com/AhmedAbdElfatahAhmed" target="_blank"><i class="fab fa-github-square"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=100005181185863" target="_blank"><i class="fab fa-facebook"></i></a>        
+      </div>
+    </section>
+<!-- End footer section -->
+<div class="scroll-btn">
+  <i class="fas fa-angle-double-up"></i>
+</div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
+
