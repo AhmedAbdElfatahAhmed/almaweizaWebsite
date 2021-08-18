@@ -235,7 +235,48 @@ header .tittle button:hover {
   padding: 80px 20px;
   font-weight: bold;
 }
-
+.hadith .choose-hadith{
+  text-align: center;
+}
+.hadith .choose-hadith input{
+  width: 200px;
+  height:30px;
+  padding-right:5px;
+  border: 1px solid #02ff3df6;
+  margin-bottom: 20px;
+}
+.hadith .choose-hadith input:focus{
+ outline: none;
+ border-color: var(--main-color);
+}
+.hadith .choose-hadith input::placeholder{
+  color: var(--main-color);
+ }
+.hadith .choose-hadith button.go{
+  padding: 5px 20px;
+  background: linear-gradient(180deg, rgb(49, 223, 49), var(--main-color));
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  cursor: pointer;
+}
+.hadith .choose-hadith .show-alert{
+ visibility: hidden;
+ background-color: #d9534f;
+ width: fit-content;
+ margin: auto;
+ color: #fff;
+ padding: 10px 20px;
+ border-radius: 8px;
+ -webkit-border-radius: 8px;
+ -moz-border-radius: 8px;
+ -ms-border-radius: 8px;
+ -o-border-radius: 8px;
+}
 .hadith .buttons {
   display: flex;
   justify-content: space-between;

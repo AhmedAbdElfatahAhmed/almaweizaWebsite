@@ -7,7 +7,7 @@ let fixedNav = document.querySelector("nav"),
   hadithContainer = document.querySelector(".hadithContainer"),
   nextButton = document.querySelector(".next"),
   prevButton = document.querySelector(".prev"),
-  numberSpan = document.querySelector(".number"),
+  numberSpan = document.querySelector("span .number"),
   readQuran = document.querySelector(".quran .display-quran .read-quran"),
   listenQuran = document.querySelector(".quran .display-quran .listen-quran"),
   surahsContainerRead = document.querySelector(".quran .surahsContainer-read"),
@@ -71,37 +71,85 @@ exploreButton.onclick = () => {
     behavior: "smooth",
   });
 };
+
+// declaration input in hadith section
+let hadithInput = document.querySelector(".hadith .choose-hadith input"),
+  goButton = document.querySelector(".hadith .choose-hadith button.go"),
+  showAlert = document.querySelector(".hadith .choose-hadith .show-alert"),
+  hadithApi = "https://api.hadith.sutanlab.id/books/muslim?range=",
+  clicked = false;
+// function to go to choosen hadith
+function goToChoosenHadith() {
+  fetch(`${hadithApi}${hadithInput.value}-${hadithInput.value}`)
+    .then((response) => response.json())
+    .then((hadithData) => {
+      if (hadithInput.value >= 1 && hadithInput.value <= 300) {
+        showAlert.style.visibility = "hidden";
+        numberSpan.innerText = hadithInput.value;
+        hadithContainer.innerText = hadithData.data.hadiths[0].arab;
+        hadithInput.value = "";
+        if (clicked) {
+          nextButton.onclick = () => {
+            numberSpan.innerText == 300
+              ? (numberSpan.innerText = 1)
+              : numberSpan.innerText++;
+          };
+
+          prevButton.onclick = () => {
+            numberSpan.innerText == 1
+              ? (numberSpan.innerText = 300)
+              : numberSpan.innerText--;
+          };
+        }
+      } else {
+        hadithInput.value = "";
+        showAlert.style.visibility = "visible";
+      }
+    });
+}
+goButton.onclick = () => {
+  clicked = true;
+  goToChoosenHadith();
+};
+
+hadithInput.onkeypress = function (e) {
+  clicked = true;
+  if (e.code == "Enter") {
+    goToChoosenHadith();
+  }
+};
+
 // calling function
 getHadith();
 //function to get Hadith from API
 function getHadith() {
   let myRequest = new XMLHttpRequest();
-  myRequest.open(
-    "Get",
-    "https://api.hadith.sutanlab.id/books/muslim?range=1-300"
-  );
+  myRequest.open("Get", `${hadithApi}1-300`);
   myRequest.send();
   myRequest.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
       let Object = JSON.parse(this.responseText);
       let hadithsArray = Object.data.hadiths;
       changeHadith();
-      nextButton.onclick = () => {
-        hadithIndex == hadithsArray.length - 1
-          ? (hadithIndex = 0)
-          : hadithIndex++;
-        changeHadith();
-      };
-      prevButton.onclick = () => {
-        hadithIndex == 0
-          ? (hadithIndex = hadithsArray.length - 1)
-          : hadithIndex--;
-        changeHadith();
-      };
+      if (clicked == false) {
+        nextButton.onclick = () => {
+          hadithIndex == hadithsArray.length - 1
+            ? (hadithIndex = 0)
+            : hadithIndex++;
+          changeHadith();
+        };
+        prevButton.onclick = () => {
+          hadithIndex == 0
+            ? (hadithIndex = hadithsArray.length - 1)
+            : hadithIndex--;
+          changeHadith();
+        };
+      }
       // function to change hadith
       function changeHadith() {
         hadithContainer.innerText = hadithsArray[hadithIndex].arab;
-        numberSpan.innerText = `${hadithsArray.length} / ${hadithIndex + 1} `;
+        // numberSpan.innerText = `${hadithsArray.length} / ${hadithIndex + 1} `;
+        numberSpan.innerText = hadithIndex + 1;
       }
     }
   };
