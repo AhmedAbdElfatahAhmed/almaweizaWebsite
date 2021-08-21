@@ -7,7 +7,7 @@ let fixedNav = document.querySelector("nav"),
   hadithContainer = document.querySelector(".hadithContainer"),
   nextButton = document.querySelector(".next"),
   prevButton = document.querySelector(".prev"),
-  numberSpan = document.querySelector("span .number"),
+  numberSpan = document.querySelector("span.number"),
   readQuran = document.querySelector(".quran .display-quran .read-quran"),
   listenQuran = document.querySelector(".quran .display-quran .listen-quran"),
   surahsContainerRead = document.querySelector(".quran .surahsContainer-read"),
@@ -75,84 +75,63 @@ exploreButton.onclick = () => {
 // declaration input in hadith section
 let hadithInput = document.querySelector(".hadith .choose-hadith input"),
   goButton = document.querySelector(".hadith .choose-hadith button.go"),
-  showAlert = document.querySelector(".hadith .choose-hadith .show-alert"),
-  hadithApi = "https://api.hadith.sutanlab.id/books/muslim?range=",
-  clicked = false;
+  showAlert = document.querySelector(".hadith .choose-hadith .show-alert");
 // function to go to choosen hadith
-function goToChoosenHadith() {
-  fetch(`${hadithApi}${hadithInput.value}-${hadithInput.value}`)
-    .then((response) => response.json())
-    .then((hadithData) => {
-      if (hadithInput.value >= 1 && hadithInput.value <= 300) {
-        showAlert.style.visibility = "hidden";
-        numberSpan.innerText = hadithInput.value;
-        hadithContainer.innerText = hadithData.data.hadiths[0].arab;
-        hadithInput.value = "";
-        if (clicked) {
-          nextButton.onclick = () => {
-            numberSpan.innerText == 300
-              ? (numberSpan.innerText = 1)
-              : numberSpan.innerText++;
-          };
-
-          prevButton.onclick = () => {
-            numberSpan.innerText == 1
-              ? (numberSpan.innerText = 300)
-              : numberSpan.innerText--;
-          };
-        }
-      } else {
-        hadithInput.value = "";
-        showAlert.style.visibility = "visible";
-      }
-    });
+function goToChosenHadith() {
+  if (hadithInput.value >= 1 && hadithInput.value <= 300) {
+    showAlert.style.visibility = "hidden";
+    numberSpan.innerText = hadithInput.value;
+    hadithIndex = hadithInput.value - 1;
+    changeHadith();
+  } else {
+    showAlert.style.visibility = "visible";
+  }
+  hadithInput.value = "";
 }
+
 goButton.onclick = () => {
-  clicked = true;
-  goToChoosenHadith();
+  goToChosenHadith();
 };
 
 hadithInput.onkeypress = function (e) {
-  clicked = true;
   if (e.code == "Enter") {
-    goToChoosenHadith();
+    goToChosenHadith();
   }
 };
 
 // calling function
 getHadith();
+let hadithsArray;
 //function to get Hadith from API
 function getHadith() {
   let myRequest = new XMLHttpRequest();
-  myRequest.open("Get", `${hadithApi}1-300`);
+  myRequest.open(
+    "Get",
+    "https://api.hadith.sutanlab.id/books/muslim?range=1-300"
+  );
   myRequest.send();
   myRequest.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
       let Object = JSON.parse(this.responseText);
-      let hadithsArray = Object.data.hadiths;
+      hadithsArray = Object.data.hadiths;
       changeHadith();
-      if (clicked == false) {
-        nextButton.onclick = () => {
-          hadithIndex == hadithsArray.length - 1
-            ? (hadithIndex = 0)
-            : hadithIndex++;
-          changeHadith();
-        };
-        prevButton.onclick = () => {
-          hadithIndex == 0
-            ? (hadithIndex = hadithsArray.length - 1)
-            : hadithIndex--;
-          changeHadith();
-        };
-      }
-      // function to change hadith
-      function changeHadith() {
-        hadithContainer.innerText = hadithsArray[hadithIndex].arab;
-        // numberSpan.innerText = `${hadithsArray.length} / ${hadithIndex + 1} `;
-        numberSpan.innerText = hadithIndex + 1;
-      }
     }
   };
+}
+nextButton.onclick = () => {
+  hadithIndex == hadithsArray.length - 1 ? (hadithIndex = 0) : hadithIndex++;
+  changeHadith();
+};
+
+prevButton.onclick = () => {
+  hadithIndex == 0 ? (hadithIndex = hadithsArray.length - 1) : hadithIndex--;
+  changeHadith();
+};
+
+// function to change hadith
+function changeHadith() {
+  hadithContainer.innerText = hadithsArray[hadithIndex].arab;
+  numberSpan.innerText = `${hadithsArray.length} / ${hadithIndex + 1} `;
 }
 
 // choose read quran when clicked on readQuran
@@ -214,7 +193,7 @@ function getSurahName() {
 
         //get surah name in surahsContainer-listen container
 
-        surahsContainerListen.innerHTML += `
+        document.querySelector(".surahsContainer").innerHTML += `
         <div class="surah-nameInlisten"> 
         <p>${allData.data[i].name.long}</p>
         <p>${allData.data[i].name.transliteration.en}</P>
@@ -225,12 +204,9 @@ function getSurahName() {
       document.querySelectorAll(".surah-nameInlisten").forEach((sur, index) => {
         sur.onclick = () => {
           getSurahAudio(index + 1);
-          document
-            .querySelector(".quran .controls .play")
-            .classList.remove("fa-play");
-          document
-            .querySelector(".quran .controls .play")
-            .classList.add("fa-pause");
+          playSurah.classList.remove("poiner_event");
+          nextAyah.classList.remove("poiner_event");
+          prevAyah.classList.remove("poiner_event");
         };
       });
     });
@@ -274,72 +250,77 @@ function getSurah(surahNumber) {
       };
     });
 }
-
+let quranAudio = document.querySelector(".quran .audio-container audio"),
+  nextAyah = document.querySelector(".quran .controls .next"),
+  prevAyah = document.querySelector(".quran .controls .prev"),
+  playSurah = document.querySelector(".quran .controls .play"),
+  ayahsCount,
+  ayahAudioArray,
+  ayahTextArray,
+  ayahIndex;
 function getSurahAudio(surahNumber) {
   fetch(apiLink + `/${surahNumber}`)
     .then((response) => response.json())
     .then((allData) => {
-      let quranAudio = document.querySelector(".quran .audio-container audio"),
-        nextAyah = document.querySelector(".quran .controls .next"),
-        prevAyah = document.querySelector(".quran .controls .prev"),
-        playSurah = document.querySelector(".quran .controls .play"),
-        ayahsCount = allData.data.verses.length,
-        ayahAudioArray = [],
-        ayahTextArray = [];
+      (ayahsCount = allData.data.verses.length),
+        (ayahAudioArray = []),
+        (ayahTextArray = []);
       for (let i = 0; i < ayahsCount; i++) {
         let ayahAudio = allData.data.verses[i].audio.primary,
           ayahText = allData.data.verses[i].text.arab;
         ayahAudioArray.push(ayahAudio);
         ayahTextArray.push(ayahText);
       }
-
-      let ayahIndex = 0;
+      ayahIndex = 0;
       changeAyah(ayahIndex);
-
-      quranAudio.addEventListener("ended", () => {
-        if (ayahIndex < ayahsCount - 1) {
-          ayahIndex++;
-          changeAyah(ayahIndex);
-        } else {
-          document.querySelector(".quran .audio-container p").innerText =
-            "اضغط علي سورة أخرى للاستماع اليها";
-        }
-      });
-      function changeAyah(index) {
-        quranAudio.src = ayahAudioArray[index];
-        if (index < ayahsCount) {
-          document.querySelector(".quran .audio-container p").innerText =
-            ayahTextArray[index];
-        }
-      }
-      nextAyah.onclick = () => {
-        ayahIndex + 1 == ayahsCount ? (ayahIndex = 0) : ayahIndex++;
-        changeAyah(ayahIndex);
-      };
-
-      prevAyah.onclick = () => {
-        ayahIndex == 0 ? (ayahIndex = ayahsCount - 1) : ayahIndex--;
-        changeAyah(ayahIndex);
-      };
-      playSurah.onclick = () => {
-        togglePlay();
-      };
-      let isAudioPlaying = true;
-      function togglePlay() {
-        if (isAudioPlaying) {
-          quranAudio.pause();
-          playSurah.classList.remove("fa-pause");
-          playSurah.classList.add("fa-play");
-          isAudioPlaying = false;
-        } else {
-          quranAudio.play();
-          playSurah.classList.remove("fa-play");
-          playSurah.classList.add("fa-pause");
-          isAudioPlaying = true;
-        }
-      }
-      return { togglePlay };
+    })
+    .then((response) => {
+      togglePlay();
     });
+}
+
+quranAudio.addEventListener("ended", () => {
+  if (ayahIndex < ayahsCount - 1) {
+    ayahIndex++;
+    changeAyah(ayahIndex);
+  } else {
+    document.querySelector(".quran .audio-container p").innerText =
+      "اضغط علي سورة أخرى للاستماع اليها";
+  }
+});
+
+function changeAyah(index) {
+  quranAudio.src = ayahAudioArray[index];
+  if (index < ayahsCount) {
+    document.querySelector(".quran .audio-container p").innerText =
+      ayahTextArray[index];
+  }
+}
+
+nextAyah.onclick = () => {
+  ayahIndex + 1 == ayahsCount ? (ayahIndex = 0) : ayahIndex++;
+  changeAyah(ayahIndex);
+};
+
+prevAyah.onclick = () => {
+  ayahIndex == 0 ? (ayahIndex = ayahsCount - 1) : ayahIndex--;
+  changeAyah(ayahIndex);
+};
+
+playSurah.onclick = () => {
+  togglePlay();
+};
+
+function togglePlay() {
+  if (quranAudio.paused) {
+    quranAudio.play();
+    playSurah.classList.remove("fa-play");
+    playSurah.classList.add("fa-pause");
+  } else {
+    quranAudio.pause();
+    playSurah.classList.remove("fa-pause");
+    playSurah.classList.add("fa-play");
+  }
 }
 
 // function to get paryer times

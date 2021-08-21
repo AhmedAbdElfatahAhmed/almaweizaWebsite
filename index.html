@@ -54,13 +54,13 @@
       <div class="container">
         <h2>أحاديث</h2>
         <div class="choose-hadith">
-          <input type="number" min="1" max="300" placeholder="اكتب رقم الحديث">
+          <input type="number"  placeholder="اكتب رقم الحديث">
           <button class="go">GO</button>
           <p class="show-alert">أكتب أرقام بين 1 -300</p>
         </div>
         <div class="buttons">
           <span class="prev">السابق</span>
-          <span>300 / <span class="number"> </span></span>
+          <span class="number"> </span>
           <span class="next">التالي</span>
         </div>
         <div class="hadithContainer"></div>
@@ -163,23 +163,29 @@
         <div class="surahsContainer-read display-non">
 
         </div>
-
+      
         <div class="popup">
           <div class="closed"><i class="far fa-times-circle" title="close"></i></div>
         </div>
-        <div class="surahsContainer-listen display-none">
+        <div class="surahsContainer-listen display-non">
           <div class="audio-container">
             <p>اضغط علي السورة للاستماع اليها</p>
             <audio src="" controls autoplay></audio>
             <div class="controls">
-              <i class="next fas fa-forward"></i>
-              <i class="play fas fa-play"></i>
-              <i class="prev fas fa-backward"></i>
+              <i class="next fas fa-forward poiner_event"></i>
+              <i class="play fas fa-play poiner_event"></i>
+              <i class="prev fas fa-backward poiner_event"></i>
             </div>
-            
+        
+          </div>
+          <div class="surahsContainer">
+
           </div>
         </div>
+        
       </div>
+      
+      
     </section>
 
    <!-- End Quran section -->
