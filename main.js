@@ -377,11 +377,11 @@ function getSurah(surahNumber) {
       }
 
       // to close popup of surah
-      closedBtn.onclick = (e) => {
+      closedBtn.onclick = () => {
         thePopup.style.right = "-100%";
         popupDiv.remove();
         window.scrollTo({
-          top: toReturnToLastSurahWhichClickedIt(),
+          top: toReturnToLastSurahWhichClickedIt() - 82,
         });
       };
     });
