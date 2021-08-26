@@ -145,6 +145,7 @@ readQuran.onclick = () => {
     document
       .querySelector(".quran .listen-quran")
       .classList.remove("quran-active");
+    document.querySelector(".quran #myInput").style.display = "flex";
   }
 };
 listenQuran.onclick = () => {
@@ -157,6 +158,7 @@ listenQuran.onclick = () => {
     document
       .querySelector(".quran .read-quran")
       .classList.remove("quran-active");
+    document.querySelector(".quran #myInput").style.display = "none";
   }
 };
 let apiLink = "https://api.quran.sutanlab.id/surah",
@@ -166,8 +168,9 @@ let apiLink = "https://api.quran.sutanlab.id/surah",
   surahsNumber = [],
   threeArabicSurahs,
   threeEnglishSurahs,
-  threeSurahsNumber;
-numberOfSurahsShowInPage = 3;
+  threeSurahsNumber,
+  numberOfSurahsShowInPage = 3,
+  surahNameInReadContainer = [];
 function getSurahName() {
   fetch(apiLink)
     .then((response) => response.json())
@@ -201,6 +204,7 @@ function getSurahName() {
         arabicSurahs.push(allData.data[i].name.long);
         englishSurahs.push(allData.data[i].name.transliteration.en);
         surahsNumber.push(allData.data[i].number);
+        surahNameInReadContainer.push(Div);
         selectSurahsFromPagination();
       }
       // to show first three surahs
@@ -372,7 +376,24 @@ function getSurah(surahNumber) {
       };
     });
 }
-
+// Start Search input in quran read
+let input = document.getElementById("myInput"),
+  item,
+  txtValue;
+function mySearchFunction() {
+  let filter = input.value.toUpperCase();
+  for (let i = 0; i < surahNameInReadContainer.length; i++) {
+    item = surahNameInReadContainer[i];
+    txtValue = item.textContent || item.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      surahNameInReadContainer[i].style.display = "";
+    } else {
+      surahNameInReadContainer[i].style.display = "none";
+    }
+  }
+}
+input.addEventListener("keyup", mySearchFunction);
+// End Search input in quran read
 let quranAudio = document.querySelector(".quran .audio-container audio"),
   nextAyah = document.querySelector(".quran .controls .next"),
   prevAyah = document.querySelector(".quran .controls .prev"),
