@@ -19,9 +19,10 @@ let fixedNav = document.querySelector("nav"),
   paryerTimes = document.querySelectorAll(".paryer-times p.time"),
   scrollBtn = document.querySelector(".scroll-btn i");
 let hadithIndex = 0;
+
 // to make background on navbar when scrolling
 window.addEventListener("scroll", () => {
-  window.pageYOffset > 100
+  window.pageYOffset > 300
     ? fixedNav.classList.add("active-nav")
     : fixedNav.classList.remove("active-nav");
   window.pageYOffset > 300
@@ -158,8 +159,15 @@ listenQuran.onclick = () => {
       .classList.remove("quran-active");
   }
 };
-
-let apiLink = "https://api.quran.sutanlab.id/surah";
+let apiLink = "https://api.quran.sutanlab.id/surah",
+  surahCount = 114,
+  arabicSurahs = [],
+  englishSurahs = [],
+  surahsNumber = [],
+  threeArabicSurahs,
+  threeEnglishSurahs,
+  threeSurahsNumber;
+numberOfSurahsShowInPage = 3;
 function getSurahName() {
   fetch(apiLink)
     .then((response) => response.json())
@@ -168,7 +176,7 @@ function getSurahName() {
       // console.log(allData.data[surahIndex].name.long);
 
       // create 114 div with class name called surah
-      for (let i = 0; i < 114; i++) {
+      for (let i = 0; i < surahCount; i++) {
         let Div = document.createElement("div");
         Div.className = "surah";
         // create first paragraph
@@ -184,35 +192,149 @@ function getSurahName() {
         surahsContainerRead.appendChild(Div);
         Div.onclick = () => {
           getSurah(i + 1);
-
           window.scrollTo({
             top: 0,
           });
           thePopup.style.right = 0;
         };
-
         //get surah name in surahsContainer-listen container
-
-        document.querySelector(".surahsContainer").innerHTML += `
-        <div class="surah-nameInlisten"> 
-        <p>${allData.data[i].name.long}</p>
-        <p>${allData.data[i].name.transliteration.en}</P>
-        </div>
-        `;
+        arabicSurahs.push(allData.data[i].name.long);
+        englishSurahs.push(allData.data[i].name.transliteration.en);
+        surahsNumber.push(allData.data[i].number);
+        selectSurahsFromPagination();
       }
-
-      document.querySelectorAll(".surah-nameInlisten").forEach((sur, index) => {
-        sur.onclick = () => {
-          getSurahAudio(index + 1);
-          playSurah.classList.remove("poiner_event");
-          nextAyah.classList.remove("poiner_event");
-          prevAyah.classList.remove("poiner_event");
-        };
-      });
+      // to show first three surahs
+      threeArabicSurahs = arabicSurahs.slice(0, numberOfSurahsShowInPage);
+      threeEnglishSurahs = englishSurahs.slice(0, numberOfSurahsShowInPage);
+      threeSurahsNumber = surahsNumber.slice(0, numberOfSurahsShowInPage);
+      showThreeSurahsByPagination();
+      // to play first three surahs
+      for (let i = 0; i < numberOfSurahsShowInPage; i++) {
+        if (i == surahsNumber[0] - 1) playSurahAudio(i);
+      }
     });
 }
 
+// Start pagination ul
+const element = document.querySelector(
+  ".surahsContainer-listen .pagination ul"
+);
+let totalPages = 38;
+let page = 1;
+
+element.innerHTML = createPagination(totalPages, page);
+function createPagination(totalPages, page) {
+  let liTag = "";
+  let active;
+  let beforePage = page - 1;
+  let afterPage = page + 1;
+
+  if (page > 2) {
+    liTag += `<li class="first numb" onclick="createPagination(totalPages, 1)"><span>1</span></li>`;
+    if (page > 3) {
+      liTag += `<li class="dots"><span>...</span></li>`;
+    }
+  }
+
+  if (page == totalPages) {
+    beforePage = beforePage - 2;
+  } else if (page == totalPages - 1) {
+    beforePage = beforePage - 1;
+  }
+  if (page == 1) {
+    afterPage = afterPage + 2;
+  } else if (page == 2) {
+    afterPage = afterPage + 1;
+  }
+
+  for (var plength = beforePage; plength <= afterPage; plength++) {
+    if (plength > totalPages) {
+      continue;
+    }
+    if (plength == 0) {
+      plength = plength + 1;
+    }
+    if (page == plength) {
+      active = "active";
+    } else {
+      active = "";
+    }
+    liTag += `<li class="numb ${active}" onclick="createPagination(totalPages, ${plength})"><span>${plength}</span></li>`;
+  }
+
+  if (page < totalPages - 1) {
+    if (page < totalPages - 2) {
+      liTag += `<li class="dots"><span>...</span></li>`;
+    }
+    liTag += `<li class="last numb" onclick="createPagination(totalPages, ${totalPages})"><span>${totalPages}</span></li>`;
+  }
+
+  element.innerHTML = liTag;
+  return liTag;
+}
+// End pagination ul
+
+function selectSurahsFromPagination() {
+  element.onclick = (e) => {
+    for (let i = 0; i < totalPages; i++) {
+      if (e.target.innerText == i + 1) {
+        threeArabicSurahs = arabicSurahs.slice(
+          i * numberOfSurahsShowInPage,
+          i * numberOfSurahsShowInPage + numberOfSurahsShowInPage
+        );
+        threeSurahsNumber = surahsNumber.slice(
+          i * numberOfSurahsShowInPage,
+          i * numberOfSurahsShowInPage + numberOfSurahsShowInPage
+        );
+      }
+    }
+    for (let i = 0; i < totalPages; i++) {
+      if (e.target.innerText == i + 1) {
+        threeEnglishSurahs = englishSurahs.slice(
+          i * numberOfSurahsShowInPage,
+          i * numberOfSurahsShowInPage + numberOfSurahsShowInPage
+        );
+        document.querySelector(".surahsContainer").innerHTML = "";
+        showThreeSurahsByPagination();
+        playSurahAudio(i * numberOfSurahsShowInPage);
+      }
+    }
+  };
+}
+
+function showThreeSurahsByPagination() {
+  for (let i = 0; i < numberOfSurahsShowInPage; i++) {
+    document.querySelector(".surahsContainer").innerHTML += `
+        <div class=surah-nameInlisten>
+        <p>${threeArabicSurahs[i]}</p>
+        <p>${threeEnglishSurahs[i]}</P>
+        <span class="surah_number">${threeSurahsNumber[i]}</span>
+        </div>
+        `;
+  }
+}
+
+function playSurahAudio(i) {
+  document.querySelectorAll(".surah-nameInlisten").forEach((sur, index) => {
+    // (Start) using this code if you want to show more than three surahs in each page
+    for (let i = 0; i < sur.children.length; i++) {
+      if (sur.children[i].innerText === "undefined") {
+        sur.remove();
+      }
+    }
+    // (End) using this code if you want to show more than three surahs in each page
+
+    sur.onclick = () => {
+      // console.log(index + i + 1);
+      getSurahAudio(index + i + 1);
+      playSurah.classList.remove("poiner_event");
+      nextAyah.classList.remove("poiner_event");
+      prevAyah.classList.remove("poiner_event");
+    };
+  });
+}
 getSurahName();
+
 function getSurah(surahNumber) {
   fetch(apiLink + `/${surahNumber}`)
     .then((response) => response.json())
@@ -241,7 +363,7 @@ function getSurah(surahNumber) {
       }
 
       // to close popup of surah
-      closedBtn.onclick = () => {
+      closedBtn.onclick = (e) => {
         thePopup.style.right = "-100%";
         popupDiv.remove();
         window.scrollTo({
@@ -250,6 +372,7 @@ function getSurah(surahNumber) {
       };
     });
 }
+
 let quranAudio = document.querySelector(".quran .audio-container audio"),
   nextAyah = document.querySelector(".quran .controls .next"),
   prevAyah = document.querySelector(".quran .controls .prev"),

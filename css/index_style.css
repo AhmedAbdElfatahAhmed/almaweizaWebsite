@@ -80,9 +80,11 @@ header nav .bars {
   cursor: pointer;
   font-size: 30px;
 }
+
 header nav.active-nav {
   background-color: rgba(0, 0, 0, 0.6);
 }
+
 header nav,
 header nav ul {
   display: flex;
@@ -238,18 +240,21 @@ header .tittle button:hover {
 .hadith .choose-hadith {
   text-align: center;
 }
-.hadith .choose-hadith input {
+.hadith .choose-hadith input,
+.quran #myInput {
   width: 200px;
   height: 30px;
   padding-right: 5px;
   border: 1px solid #02ff3df6;
   margin-bottom: 20px;
 }
-.hadith .choose-hadith input:focus {
+.hadith .choose-hadith input:focus,
+.quran #myInput:focus {
   outline: none;
   border-color: var(--main-color);
 }
-.hadith .choose-hadith input::placeholder {
+.hadith .choose-hadith input::placeholder,
+.quran #myInput::placeholder {
   color: var(--main-color);
 }
 .hadith .choose-hadith button.go {
@@ -396,6 +401,13 @@ header .tittle button:hover {
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
+.quran #myInput {
+  margin: 25px auto;
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 346px) {
   .quran .surahsContainer-read {
     justify-content: center;
@@ -471,19 +483,18 @@ header .tittle button:hover {
 .quran .surahsContainer-listen .audio-container {
   background-color: var(--main-color);
   padding: 30px;
-  position: sticky;
-  top: 0;
-  margin-bottom: 8px;
   color: #fff;
-  z-index: 1;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  width: calc(100% - 60px);
 }
 .quran .surahsContainer-listen .audio-container p {
   text-align: center;
   margin-bottom: 25px;
   font-size: 25px;
-}
-.quran .surahsContainer-listen .audio-container audio {
-  width: 100%;
 }
 .controls {
   font-size: 20px;
@@ -507,7 +518,6 @@ header .tittle button:hover {
   font-size: 18px;
   width: calc(100% - 60px);
   position: relative;
-  counter-increment: surah-counter;
   transition: 0.6s tr;
   -webkit-transition: 0.6s transform;
   -moz-transition: 0.6s tr;
@@ -521,8 +531,7 @@ header .tittle button:hover {
   -ms-transform: scale(0.97);
   -o-transform: scale(0.97);
 }
-.quran .surah-nameInlisten::after {
-  content: counter(surah-counter);
+.quran .surah-nameInlisten .surah_number {
   position: absolute;
   width: 50px;
   height: 50px;
@@ -558,6 +567,62 @@ header .tittle button:hover {
 }
 .poiner_event {
   pointer-events: none;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.pagination ul {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: var(--main-color);
+  padding: 8px;
+  border-radius: 50px;
+  flex-basis: 35%;
+}
+.pagination ul li {
+  color: #fff;
+  list-style: none;
+  line-height: 45px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+}
+.pagination ul li.numb,
+.pagination ul li.btn {
+  list-style: none;
+  height: 45px;
+  width: 45px;
+  margin: 0 3px;
+  line-height: 45px;
+  border-radius: 50%;
+}
+.pagination ul li.numb.first {
+  margin: 0px 3px 0 -5px;
+}
+.pagination ul li.numb.last {
+  margin: 0px -5px 0 3px;
+}
+.pagination ul li.dots {
+  font-size: 22px;
+  cursor: default;
+}
+.pagination li.active,
+.pagination ul li.numb:hover,
+.pagination li:first-child:hover,
+.pagination ul li:last-child:hover {
+  background: rgb(4, 195, 36);
 }
 /* End Quran section  */
 
