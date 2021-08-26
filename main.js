@@ -371,11 +371,25 @@ function getSurah(surahNumber) {
         thePopup.style.right = "-100%";
         popupDiv.remove();
         window.scrollTo({
-          top: 2158,
+          top: toReturnToLastSurahWhichClickedIt(),
         });
       };
     });
 }
+
+let toReturnToLastSurahWhichClickedIt, distanceBetweenTargetSurahAndTop;
+toReturnToLastSurahWhichClickedIt = function () {
+  surahsContainerRead.addEventListener("click", (e) => {
+    if (e.target.nodeName == "P") {
+      distanceBetweenTargetSurahAndTop = e.target.parentNode.offsetTop;
+    } else {
+      distanceBetweenTargetSurahAndTop = e.target.offsetTop;
+    }
+  });
+  return distanceBetweenTargetSurahAndTop;
+};
+distanceBetweenTargetSurahAndTop = toReturnToLastSurahWhichClickedIt();
+
 // Start Search input in quran read
 let input = document.getElementById("myInput"),
   item,
