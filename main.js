@@ -28,6 +28,16 @@ window.addEventListener("scroll", () => {
   window.pageYOffset > 300
     ? scrollBtn.classList.add("active-btn")
     : scrollBtn.classList.remove("active-btn");
+  // for border in links of Pseudo element (li::after)
+  if (window.pageYOffset > 300) {
+    document
+      .querySelector(".main ul li.active")
+      .style.setProperty("--border-color", "transparent");
+  } else {
+    document
+      .querySelector(".main ul li.active")
+      .style.setProperty("--border-color", "#fff");
+  }
 });
 
 // toggle navbar when clicked on bars
