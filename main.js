@@ -233,7 +233,7 @@ function getSurahName() {
 const element = document.querySelector(
   ".surahsContainer-listen .pagination ul"
 );
-let totalPages = 38;
+let totalPages = Math.ceil(surahCount / numberOfSurahsShowInPage);
 let page = 1;
 
 element.innerHTML = createPagination(totalPages, page);
@@ -318,28 +318,21 @@ function selectSurahsFromPagination() {
 
 function showThreeSurahsByPagination() {
   for (let i = 0; i < numberOfSurahsShowInPage; i++) {
-    document.querySelector(".surahsContainer").innerHTML += `
-        <div class=surah-nameInlisten>
-        <p>${threeArabicSurahs[i]}</p>
-        <p>${threeEnglishSurahs[i]}</P>
-        <span class="surah_number">${threeSurahsNumber[i]}</span>
-        </div>
-        `;
+    if (threeArabicSurahs[i]) {
+      document.querySelector(".surahsContainer").innerHTML += `
+      <div class=surah-nameInlisten>
+      <p>${threeArabicSurahs[i]}</p>
+      <p>${threeEnglishSurahs[i]}</P>
+      <span class="surah_number">${threeSurahsNumber[i]}</span>
+      </div>
+      `;
+    }
   }
 }
 
 function playSurahAudio(i) {
   document.querySelectorAll(".surah-nameInlisten").forEach((sur, index) => {
-    // (Start) using this code if you want to show more than three surahs in each page
-    for (let i = 0; i < sur.children.length; i++) {
-      if (sur.children[i].innerText === "undefined") {
-        sur.remove();
-      }
-    }
-    // (End) using this code if you want to show more than three surahs in each page
-
     sur.onclick = () => {
-      // console.log(index + i + 1);
       getSurahAudio(index + i + 1);
       playSurah.classList.remove("poiner_event");
       nextAyah.classList.remove("poiner_event");
@@ -381,24 +374,21 @@ function getSurah(surahNumber) {
         thePopup.style.right = "-100%";
         popupDiv.remove();
         window.scrollTo({
-          top: toReturnToLastSurahWhichClickedIt() - 82,
+          top: distanceBetweenTargetSurahAndTop - 82,
         });
       };
     });
 }
 
-let toReturnToLastSurahWhichClickedIt, distanceBetweenTargetSurahAndTop;
-toReturnToLastSurahWhichClickedIt = function () {
-  surahsContainerRead.addEventListener("click", (e) => {
-    if (e.target.nodeName == "P") {
-      distanceBetweenTargetSurahAndTop = e.target.parentNode.offsetTop;
-    } else {
-      distanceBetweenTargetSurahAndTop = e.target.offsetTop;
-    }
-  });
-  return distanceBetweenTargetSurahAndTop;
-};
-distanceBetweenTargetSurahAndTop = toReturnToLastSurahWhichClickedIt();
+let distanceBetweenTargetSurahAndTop;
+surahsContainerRead.addEventListener("click", (e) => {
+  if (e.target.nodeName == "P") {
+    distanceBetweenTargetSurahAndTop = e.target.parentNode.offsetTop;
+  } else {
+    distanceBetweenTargetSurahAndTop = e.target.offsetTop;
+  }
+  console.log(distanceBetweenTargetSurahAndTop);
+});
 
 // Start Search input in quran read
 let input = document.getElementById("myInput"),
@@ -510,3 +500,9 @@ function getParyerTimes() {
     });
 }
 getParyerTimes();
+
+/*
+1- handel error if numberOfSurahsShowInPage >114 or < 0  .
+2- handel pagination ul if show -1 -2 infinity if numberOfSurahsShowInPage unexpected .
+3- seperete js and css files to many files .
+*/
